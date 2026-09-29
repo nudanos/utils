@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+export GO111MODULE := off
 #DH_VERBOSE=1
 export DH_OPTIONS
 export DH_GOPKG := github.com/danos/utils
@@ -14,7 +15,7 @@ GOBUILDDIR := _build
 GOCOVER=$(if $(shell go doc cmd/cover >/dev/null 2>&1 && echo true),-cover,)
 
 %:
-	dh $@ --buildsystem=golang --with=golang --builddirectory=$(GOBUILDDIR)
+	dh $@ --buildsystem=golang --with golang --builddirectory=$(GOBUILDDIR)
 
 override_dh_auto_build: vet
 	dh_auto_build -- $(GORACE)

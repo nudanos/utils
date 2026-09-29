@@ -1,13 +1,15 @@
 Source: golang-github-danos-utils
 Section: devel
-Priority: extra
-Maintainer: Vyatta Package Maintainers <DL-vyatta-help@att.com>
-Build-Depends:
- debhelper (>= 9),
+Priority: optional
+Maintainer: NuDanOS Maintainers <jon@fernandez.tech>
+Build-Depends: debhelper-compat (= 13),
  dh-golang (>= 1.18),
  golang (>= 1.6),
  libaudit-dev
-Standards-Version: 3.9.8
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Vcs-Git: https://github.com/nudanos/utils.git
+Vcs-Browser: https://github.com/nudanos/utils
 
 Package: golang-github-danos-utils-audit-dev
 Architecture: all
@@ -18,7 +20,7 @@ Description: Auditing package
 
 Package: golang-github-danos-utils-exec-dev
 Architecture: all
-Depends:
+Depends: 
  golang-github-danos-utils-pathutil-dev,
 Built-Using: ${misc:Built-Using}
 Description: Package to run external commands
