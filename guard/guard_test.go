@@ -6,7 +6,7 @@
 package guard_test
 
 import (
-	"fmt"
+	"errors"
 	"testing"
 
 	"github.com/danos/utils/guard"
@@ -14,7 +14,7 @@ import (
 
 const errmsg = `Intentional Panic`
 
-var testerr = fmt.Errorf("Test Error Message")
+var errTest = errors.New("test error message")
 
 func letsPanicError(cause string, haveapanic bool, err error) error {
 	if haveapanic {
@@ -56,7 +56,6 @@ func isErrAsExpected(t *testing.T, expect, got error) {
 				expect.Error(), got.Error())
 		}
 	}
-	return
 
 }
 
@@ -86,8 +85,8 @@ func TestNoPanicErrorOnly(t *testing.T) {
 	isErrAsExpected(t, nil, err)
 
 	// Check expected error seen
-	err = guard.CatchPanicErrorOnly(func() error { return letsPanicError(errmsg, false, testerr) })
-	isErrAsExpected(t, testerr, err)
+	err = guard.CatchPanicErrorOnly(func() error { return letsPanicError(errmsg, false, errTest) })
+	isErrAsExpected(t, errTest, err)
 
 }
 
@@ -95,10 +94,10 @@ func TestNoPanicErrorOnly(t *testing.T) {
 // originates from the panic, not from the function being guarded
 func TestPanicErrorOnly(t *testing.T) {
 	err := guard.CatchPanicErrorOnly(func() error { return letsPanicError(errmsg, true, nil) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 
-	err = guard.CatchPanicErrorOnly(func() error { return letsPanicError(errmsg, true, testerr) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	err = guard.CatchPanicErrorOnly(func() error { return letsPanicError(errmsg, true, errTest) })
+	isErrAsExpected(t, errors.New(errmsg), err)
 }
 
 // TestNoPanicBoolError tests that when no panic occurs during call of guarded
@@ -112,12 +111,12 @@ func TestNoPanicBoolError(t *testing.T) {
 	isErrAsExpected(t, nil, err)
 	isBoolAsExpected(t, true, result)
 
-	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, false, false, testerr) })
-	isErrAsExpected(t, testerr, err)
+	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, false, false, errTest) })
+	isErrAsExpected(t, errTest, err)
 	isBoolAsExpected(t, false, result)
 
-	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, true, false, testerr) })
-	isErrAsExpected(t, testerr, err)
+	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, true, false, errTest) })
+	isErrAsExpected(t, errTest, err)
 	isBoolAsExpected(t, true, result)
 
 }
@@ -126,19 +125,19 @@ func TestNoPanicBoolError(t *testing.T) {
 // function, the expected result and/or error is observed
 func TestPanicBoolError(t *testing.T) {
 	result, err := guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, false, true, nil) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 
 	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, true, true, nil) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 
-	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, false, true, testerr) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, false, true, errTest) })
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 
-	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, true, true, testerr) })
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	result, err = guard.CatchPanicBoolError(func() (bool, error) { return letsPanicBoolError(errmsg, true, true, errTest) })
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 }
 
@@ -150,14 +149,14 @@ func TestCatchPanicNoPanic(t *testing.T) {
 	isErrAsExpected(t, nil, err)
 	isBoolAsExpected(t, true, result)
 
-	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicStringError(errmsg, "TestString", false, testerr) })
+	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicStringError(errmsg, "TestString", false, errTest) })
 	strResult, _ := b.(string)
-	isErrAsExpected(t, testerr, err)
+	isErrAsExpected(t, errTest, err)
 	isStringAsExpected(t, "TestString", strResult)
 
-	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicIntError(errmsg, 42, false, testerr) })
+	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicIntError(errmsg, 42, false, errTest) })
 	intResult, _ := b.(int)
-	isErrAsExpected(t, testerr, err)
+	isErrAsExpected(t, errTest, err)
 	isIntAsExpected(t, 42, intResult)
 }
 
@@ -166,22 +165,22 @@ func TestCatchPanicNoPanic(t *testing.T) {
 func TestCatchPanicWithPanic(t *testing.T) {
 	b, err := guard.CatchPanic(func() (interface{}, error) { return letsPanicBoolError(errmsg, true, true, nil) })
 	result, _ := b.(bool)
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 
-	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicBoolError(errmsg, true, true, testerr) })
+	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicBoolError(errmsg, true, true, errTest) })
 	result, _ = b.(bool)
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isBoolAsExpected(t, false, result)
 
-	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicIntError(errmsg, 42, true, testerr) })
+	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicIntError(errmsg, 42, true, errTest) })
 	intResult, _ := b.(int)
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isIntAsExpected(t, 0, intResult)
 
-	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicStringError(errmsg, "Test String", true, testerr) })
+	b, err = guard.CatchPanic(func() (interface{}, error) { return letsPanicStringError(errmsg, "Test String", true, errTest) })
 	strResult, _ := b.(string)
-	isErrAsExpected(t, fmt.Errorf(errmsg), err)
+	isErrAsExpected(t, errors.New(errmsg), err)
 	isStringAsExpected(t, "", strResult)
 
 }

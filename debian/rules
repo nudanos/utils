@@ -17,7 +17,7 @@ GOCOVER=$(if $(shell go doc cmd/cover >/dev/null 2>&1 && echo true),-cover,)
 %:
 	dh $@ --buildsystem=golang --with golang --builddirectory=$(GOBUILDDIR)
 
-override_dh_auto_build: vet
+override_dh_auto_build: vet staticcheck
 	dh_auto_build -- $(GORACE)
 
 override_dh_auto_test:
@@ -29,3 +29,11 @@ vet:
 		GOPATH=$(CURDIR)/$(GOBUILDDIR) go vet $$(find . -type f -name \*.go | \
 		xargs dirname | sort -u); \
 	fi
+
+# NuDanOS: staticcheck every Go package; distro-build lint reads the result
+# from the build log (distro docs/porting.md)
+staticcheck:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	cd $(GOBUILDDIR)/src/$(DH_GOPKG) && GOPATH=$(CURDIR)/$(GOBUILDDIR) go-staticcheck ./... 2>&1 | sed "s/^/nudanos-staticcheck: /" || true
+	@echo "nudanos-staticcheck: done"
+endif

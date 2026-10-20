@@ -70,7 +70,7 @@ func CopyAppend(path []string, vals ...string) []string {
 
 func RedactPath(path []string, pathAttrs *PathAttrs) ([]string, error) {
 	if pathAttrs == nil || len(path) != len(pathAttrs.Attrs) {
-		return []string{"<path redaction failed>"}, fmt.Errorf("Unable to redact command")
+		return []string{"<path redaction failed>"}, fmt.Errorf("unable to redact command")
 	}
 
 	/* Redact values for all secret elements in the path */

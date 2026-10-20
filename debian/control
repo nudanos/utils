@@ -5,7 +5,8 @@ Maintainer: NuDanOS Maintainers <jon@fernandez.tech>
 Build-Depends: debhelper-compat (= 13),
  dh-golang (>= 1.18),
  golang (>= 1.6),
- libaudit-dev
+ libaudit-dev,
+ go-staticcheck <!nocheck>
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Vcs-Git: https://github.com/nudanos/utils.git

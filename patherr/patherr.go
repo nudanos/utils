@@ -72,7 +72,7 @@ func (e *PathAmbig) Error() string {
 	fmt.Fprintf(buf, "\n  Possible completions:\n")
 
 	sorted := make([]string, 0, len(e.Matches))
-	for n, _ := range e.Matches {
+	for n := range e.Matches {
 		sorted = append(sorted, n)
 	}
 

@@ -114,7 +114,7 @@ type Graph struct {
 
 func (g *Graph) keys() []string {
 	keys := make([]string, 0, len(g.vs))
-	for k, _ := range g.vs {
+	for k := range g.vs {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
