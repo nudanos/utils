@@ -5,6 +5,7 @@
 //
 // SPDX-License-Identifier: MPL-2.0
 
+//go:build (darwin || freebsd || linux || netbsd || openbsd) && cgo
 // +build darwin freebsd linux netbsd openbsd
 // +build cgo
 

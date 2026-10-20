@@ -51,7 +51,7 @@ var zs = []string{
 	"z.doc",
 }
 
-//list lifted from: http://www.davekoelle.com/alphanum.html
+// list lifted from: http://www.davekoelle.com/alphanum.html
 var others = []string{
 	"1000X Radonius Maximus",
 	"10X Radonius",

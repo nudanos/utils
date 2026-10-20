@@ -28,6 +28,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
+//go:build (darwin || freebsd || linux || netbsd || openbsd) && cgo
 // +build darwin freebsd linux netbsd openbsd
 // +build cgo
 

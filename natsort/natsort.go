@@ -59,7 +59,7 @@ func Less(ain, bin string) (out bool) {
 		}
 		if aint, err := strconv.Atoi(a); err == nil {
 			if bint, err := strconv.Atoi(b); err == nil {
-				if (aint == bint) {
+				if aint == bint {
 					continue
 				}
 				return aint < bint

@@ -17,7 +17,7 @@ import (
 	"strconv"
 )
 
-//Group represents a group entry
+// Group represents a group entry
 type Group struct {
 	Gid      uint32 // group id
 	Name     string

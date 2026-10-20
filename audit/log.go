@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: MPL-2.0
 
-// +build linux
-// +build cgo
+//go:build linux && cgo
+// +build linux,cgo
 
 package audit
 
