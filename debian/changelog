@@ -1,3 +1,11 @@
+golang-github-danos-utils (1.10) trixie; urgency=medium
+
+  * Code-quality lint fixes (distro docs/porting.md): analyzer findings
+    fixed, see the git log.
+  * staticcheck runs in the build.
+
+ -- NuDanOS Maintainers <jon@fernandez.tech>  Wed, 21 Oct 2026 07:01:13 +0000
+
 golang-github-danos-utils (1.9) trixie; urgency=medium
 
   * go vet every Go package, vendored code included.
